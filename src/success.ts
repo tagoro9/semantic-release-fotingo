@@ -42,5 +42,5 @@ function callFotingo(
 }
 
 export async function success(_: Record<string, unknown>, context: Context): Promise<void> {
-  await callFotingo("release", context.logger, { env: context.env });
+  await callFotingo(["release", "-n"], context.logger, { env: context.env });
 }

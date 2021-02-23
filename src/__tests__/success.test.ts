@@ -75,6 +75,7 @@ describe("success", () => {
         "fotingo",
         Array [
           "release",
+          "-n",
         ],
       ]
     `);
