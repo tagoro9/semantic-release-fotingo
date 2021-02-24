@@ -12,6 +12,8 @@
     "clean": "rimraf lib",
     "coverage": "jest --coverage --silent",
     "lint": "eslint ./src --color --ext .ts --ext .tsx",
+    "prepack": "yarn clean && yarn build",
+    "prepare": "yarn build",
     "test": "jest",
     "watch": "tsc-watch -p /tsconfig.build.json --onSuccess 'yarn build:fix-paths'"
   },
