@@ -17,6 +17,10 @@
     "test": "jest",
     "watch": "tsc-watch -p /tsconfig.build.json --onSuccess 'yarn build:fix-paths'"
   },
+  "keywords": [
+    "fotingo",
+    "semantic-release"
+  ],
   "husky": {
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
