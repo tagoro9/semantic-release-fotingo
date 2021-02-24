@@ -7,7 +7,7 @@
   "author": "Victor Mora",
   "license": "MIT",
   "scripts": {
-    "build": "yarn clean && tsc -p /tsconfig.build.json && yarn build:fix-paths",
+    "build": "yarn clean && tsc -p ./tsconfig.build.json && yarn build:fix-paths",
     "build:fix-paths": "tscpaths -p ./tsconfig.build.json -s ./src -o ./lib",
     "clean": "rimraf lib",
     "coverage": "jest --coverage --silent",
@@ -15,7 +15,7 @@
     "prepack": "yarn clean && yarn build",
     "prepare": "yarn build",
     "test": "jest",
-    "watch": "tsc-watch -p /tsconfig.build.json --onSuccess 'yarn build:fix-paths'"
+    "watch": "tsc-watch -p ./tsconfig.build.json --onSuccess 'yarn build:fix-paths'"
   },
   "keywords": [
     "fotingo",
