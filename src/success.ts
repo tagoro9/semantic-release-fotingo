@@ -30,5 +30,7 @@ export async function success(_: Record<string, unknown>, context: Context): Pro
     return;
   }
   const issues = getIssuesInRelease(context).map((issue) => `-i ${issue}`);
-  await callFotingo(["release", "-n", context.nextRelease.version, ...issues], context.logger, { env: context.env });
+  await callFotingo(["release", "-y", "-n", context.nextRelease.version, ...issues], context.logger, {
+    env: context.env,
+  });
 }
