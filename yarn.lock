@@ -1010,6 +1010,13 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
+"@types/conventional-commits-parser@^3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@types/conventional-commits-parser/-/conventional-commits-parser-3.0.1.tgz#1a4796a0ae2bf33b41ea49f55e27ccbdb29cce5e"
+  integrity sha512-xkKomW6PqJS0rzFPPQSzKwbKIRqAGjYa1aWWkoT14YYodXyEpG4ok4H1US3olqGBxejz7EeBfT3fTJ3hUOiUkQ==
+  dependencies:
+    "@types/node" "*"
+
 "@types/debug@^4.1.5":
   version "4.1.5"
   resolved "https://registry.yarnpkg.com/@types/debug/-/debug-4.1.5.tgz#b14efa8852b7768d898906613c23f688713e02cd"
@@ -2297,6 +2304,19 @@ conventional-commits-parser@^3.0.0, conventional-commits-parser@^3.0.1, conventi
     lodash "^4.17.15"
     meow "^8.0.0"
     split2 "^2.0.0"
+    through2 "^4.0.0"
+    trim-off-newlines "^1.0.0"
+
+conventional-commits-parser@^3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/conventional-commits-parser/-/conventional-commits-parser-3.2.1.tgz#ba44f0b3b6588da2ee9fd8da508ebff50d116ce2"
+  integrity sha512-OG9kQtmMZBJD/32NEw5IhN5+HnBqVjy03eC+I71I0oQRFA5rOgA4OtPOYG7mz1GkCfCNxn3gKIX8EiHJYuf1cA==
+  dependencies:
+    JSONStream "^1.0.4"
+    is-text-path "^1.0.1"
+    lodash "^4.17.15"
+    meow "^8.0.0"
+    split2 "^3.0.0"
     through2 "^4.0.0"
     trim-off-newlines "^1.0.0"
 
