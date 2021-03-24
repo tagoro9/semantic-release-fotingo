@@ -18,8 +18,9 @@ export function callFotingo(
   options?: { cwd?: string; env?: { [k: string]: string } }
 ): Promise<void> {
   return new Promise<void>((resolve, reject) => {
-    debug("running fotingo release");
-    const fotingoCmd = spawn("fotingo", Array.isArray(arguments_) ? arguments_ : [arguments_], options);
+    const arguments__ = Array.isArray(arguments_) ? arguments_ : [arguments_];
+    debug(`running fotingo release with args: ${arguments__}`);
+    const fotingoCmd = spawn("fotingo", arguments__, options);
     fotingoCmd.stdout.on("data", (data) => {
       logger.log(data.toString());
     });
@@ -27,11 +28,11 @@ export function callFotingo(
       logger.error(data.toString());
     });
     fotingoCmd.on("error", (error) => {
-      debug("crowdin command returned an error %o", error);
+      debug("fotingo command returned an error %o", error);
       reject(error);
     });
     fotingoCmd.on("close", (code) => {
-      debug("crowdin command exited with code %s", code);
+      debug("fotingo command exited with code %s", code);
       if (code !== 0) {
         reject(new Error(`Fotingo exited with code ${code}`));
       } else {
