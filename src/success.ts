@@ -29,7 +29,9 @@ export async function success(_: Record<string, unknown>, context: Context): Pro
     context.logger.error("Could not find next release. Exiting");
     return;
   }
-  const issues = getIssuesInRelease(context).map((issue) => `-i ${issue.trim()}`);
+  const issues = getIssuesInRelease(context)
+    .map((issue) => ["-i", issue.trim()])
+    .flat();
   await callFotingo(["release", "-y", "-n", context.nextRelease.version, ...issues], context.logger, {
     env: context.env,
   });
