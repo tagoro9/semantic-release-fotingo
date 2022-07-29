@@ -6,8 +6,8 @@ import { publish } from "~/publish";
 
 import { getLogger, mockFotingoCommand } from "./utils";
 
-jest.mock("child_process", () => ({ execSync: jest.fn().mockReturnValue("./.bin"), spawn: jest.fn() }));
-jest.mock("path", () => ({ resolve: jest.fn().mockReturnValue("fotingo") }));
+jest.mock("child_process", () => ({ spawn: jest.fn() }));
+jest.mock("path", () => ({ dirname: jest.fn().mockReturnValue(""), resolve: jest.fn().mockReturnValue("fotingo") }));
 
 const spawnMock = spawn as unknown as jest.Mock;
 

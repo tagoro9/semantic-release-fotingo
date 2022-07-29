@@ -1,7 +1,7 @@
-import { execSync, spawn } from "child_process";
+import { spawn } from "child_process";
 import createDebugger from "debug";
 // eslint-disable-next-line unicorn/import-style
-import { resolve as pathResolve } from "path";
+import { dirname, resolve as pathResolve } from "path";
 import { Context } from "semantic-release";
 
 const debug = createDebugger("semantic-release-fotingo");
@@ -22,10 +22,9 @@ export function callFotingo(
   return new Promise<void>((resolve, reject) => {
     const arguments__ = Array.isArray(arguments_) ? arguments_ : [arguments_];
     debug(`running fotingo release with args: ${arguments__}`);
-    const npmBinPath = execSync("npm bin", { encoding: "utf8" }).trim();
-    logger.info(npmBinPath);
-    const fotingoPath = pathResolve(npmBinPath, "fotingo");
-    logger.info(fotingoPath);
+    // eslint-disable-next-line unicorn/prefer-module
+    const fotingoPath = pathResolve(dirname(require.resolve("fotingo")), "../../.bin/fotingo");
+    logger.log(`Running fotingo from ${fotingoPath}`);
     const fotingoCmd = spawn(fotingoPath, arguments__, options);
     fotingoCmd.stdout.on("data", (data: string) => {
       logger.log(data.toString());
