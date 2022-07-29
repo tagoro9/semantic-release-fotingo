@@ -5,7 +5,8 @@ import { verifyConditions } from "~/verifyConditions";
 
 import { getLogger, mockFotingoCommand } from "./utils";
 
-jest.mock("child_process", () => ({ spawn: jest.fn() }));
+jest.mock("child_process", () => ({ execSync: jest.fn().mockReturnValue("./.bin"), spawn: jest.fn() }));
+jest.mock("path", () => ({ resolve: jest.fn().mockReturnValue("fotingo") }));
 const spawnMock = spawn as unknown as jest.Mock;
 
 describe("verifyConditions", () => {
@@ -25,7 +26,7 @@ describe("verifyConditions", () => {
     expect(spawnMock).toHaveBeenCalled();
     expect(spawnMock.mock.calls[0].slice(0, -1)).toMatchInlineSnapshot(`
       Array [
-        "./node_modules/bin/fotingo",
+        "fotingo",
         Array [
           "verify",
         ],
