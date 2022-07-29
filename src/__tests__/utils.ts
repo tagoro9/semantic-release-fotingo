@@ -1,6 +1,7 @@
 import { spawn } from "child_process";
 
 import EventEmitter = require("events");
+import { Context, LoggerFunction } from "semantic-release";
 
 /**
  * Mock a call to spawn. Return a similar api backed by event emitters
@@ -12,7 +13,7 @@ function mockSpawn(spawnMock: jest.Mock) {
     stdout: new EventEmitter.EventEmitter(),
   });
   spawnMock.mockImplementation(() => eventEmitter);
-  return (eventEmitter as unknown) as ReturnType<typeof spawn>;
+  return eventEmitter as unknown as ReturnType<typeof spawn>;
 }
 
 /**
@@ -33,7 +34,8 @@ export async function mockFotingoCommand({
   exitCode?: number;
   shouldSucceed?: boolean;
   spawnMock: jest.Mock;
-}) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+}): Promise<any> {
   const eventEmitter = mockSpawn(spawnMock);
   const commandPromise = callCommand();
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -49,9 +51,28 @@ export async function mockFotingoCommand({
 /**
  * Build a semantic release logger mock
  */
-export function getLogger() {
-  return {
-    error: jest.fn(),
-    log: jest.fn(),
-  };
+export function getLogger(): Record<keyof Context["logger"], jest.Mock<LoggerFunction>> {
+  const properties = [
+    "await",
+    "complete",
+    "debug",
+    "error",
+    "fatal",
+    "fav",
+    "info",
+    "log",
+    "note",
+    "pause",
+    "pending",
+    "star",
+    "start",
+    "success",
+    "wait",
+    "warn",
+    "watch",
+  ];
+  return Object.fromEntries(properties.map((property) => [property, jest.fn()])) as Record<
+    keyof Context["logger"],
+    jest.Mock<LoggerFunction>
+  >;
 }

@@ -1,18 +1,20 @@
+import { jest } from "@jest/globals";
 import { spawn } from "child_process";
-import { Context } from "semantic-release";
+import { Commit, Context } from "semantic-release";
 
 import { publish } from "~/publish";
-import { getLogger, mockFotingoCommand } from "~/testUtils";
+
+import { getLogger, mockFotingoCommand } from "./utils";
 
 jest.mock("child_process", () => ({ spawn: jest.fn() }));
 
-const spawnMock = (spawn as unknown) as jest.Mock;
+const spawnMock = spawn as unknown as jest.Mock;
 
 describe("publish", () => {
   const commits = [
     { message: "feat: add something\nFixes #TEST-1234" },
     { message: "fix: fix something\nFixes #TEST-12" },
-  ];
+  ] as Commit[];
 
   const nextRelease = {
     gitHead: "HEAD",
@@ -21,6 +23,8 @@ describe("publish", () => {
     type: "major",
     version: "1.0.0",
   };
+
+  const branch = { name: "main" };
 
   const options = {
     branches: [],
@@ -36,7 +40,14 @@ describe("publish", () => {
   test("calls fotingo release with the context env", async () => {
     const logger = getLogger();
     await mockFotingoCommand({
-      callCommand: () => publish({}, { commits, env: { FOTINGO_ENV_TEST: "test" }, logger, nextRelease } as Context),
+      callCommand: () =>
+        publish({}, {
+          branch,
+          commits,
+          env: { FOTINGO_ENV_TEST: "test" },
+          logger,
+          nextRelease,
+        } as Context),
       exitCode: 0,
       spawnMock,
     });
@@ -62,7 +73,7 @@ describe("publish", () => {
 
   test("it's a noop when there are no issues in the commits", async () => {
     await mockFotingoCommand({
-      callCommand: () => publish({}, { env: {}, logger: getLogger(), nextRelease } as Context),
+      callCommand: () => publish({}, { branch, env: {}, logger: getLogger(), nextRelease } as Context),
       exitCode: 0,
       spawnMock,
     });
@@ -71,7 +82,7 @@ describe("publish", () => {
 
   test("it's a noop when there is no release", async () => {
     await mockFotingoCommand({
-      callCommand: () => publish({}, { commits, env: {}, logger: getLogger() } as Context),
+      callCommand: () => publish({}, { branch, commits, env: {}, logger: getLogger() } as Context),
       exitCode: 0,
       spawnMock,
     });
@@ -80,7 +91,13 @@ describe("publish", () => {
 
   test("it's a noop when it is a dry run", async () => {
     await mockFotingoCommand({
-      callCommand: () => publish({}, { env: {}, logger: getLogger(), options: { ...options, dryRun: true } } as Context),
+      callCommand: () =>
+        publish({}, {
+          branch,
+          env: {},
+          logger: getLogger(),
+          options: { ...options, dryRun: true },
+        } as Context),
       exitCode: 0,
       spawnMock,
     });
@@ -90,7 +107,7 @@ describe("publish", () => {
   test("logs an error if fotingo errors out", async () => {
     const logger = getLogger();
     await mockFotingoCommand({
-      callCommand: () => publish({}, { commits, env: {}, logger, nextRelease } as Context),
+      callCommand: () => publish({}, { branch, commits, env: {}, logger, nextRelease } as Context),
       shouldSucceed: false,
       spawnMock,
     });
@@ -110,7 +127,7 @@ describe("publish", () => {
   test("log an error on any non zero exit code", async () => {
     const logger = getLogger();
     await mockFotingoCommand({
-      callCommand: () => publish({}, { commits, env: {}, logger: logger, nextRelease } as Context),
+      callCommand: () => publish({}, { branch, commits, env: {}, logger: logger, nextRelease } as Context),
       exitCode: 1,
       spawnMock,
     });

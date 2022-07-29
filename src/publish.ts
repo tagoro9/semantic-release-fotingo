@@ -11,9 +11,8 @@ import { callFotingo } from "~/callFotingo";
  */
 function getIssuesInRelease(context: Result | Context): string[] {
   if (typeof context === "object" && "commits" in context) {
-    return context.commits
-      .map((commit) => sync(commit.message).references)
-      .flat()
+    return (context.commits || [])
+      .flatMap((commit) => sync(commit.message).references)
       .filter((reference) => reference.action && /fixes/i.test(reference.action))
       .map((reference) => reference.issue);
   }
@@ -21,9 +20,7 @@ function getIssuesInRelease(context: Result | Context): string[] {
 }
 
 export async function publish(_: Record<string, unknown>, context: Context): Promise<void> {
-  const issues = getIssuesInRelease(context)
-    .map((issue) => ["-i", issue.trim()])
-    .flat();
+  const issues = getIssuesInRelease(context).flatMap((issue) => ["-i", issue.trim()]);
   context.logger.log(`Creating release with issues: ${issues.join(",")}`);
   if (context.options?.dryRun) {
     context.logger.log("Skipping fotingo release. Dry run");

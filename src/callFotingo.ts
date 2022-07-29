@@ -21,17 +21,17 @@ export function callFotingo(
     const arguments__ = Array.isArray(arguments_) ? arguments_ : [arguments_];
     debug(`running fotingo release with args: ${arguments__}`);
     const fotingoCmd = spawn("fotingo", arguments__, options);
-    fotingoCmd.stdout.on("data", (data) => {
+    fotingoCmd.stdout.on("data", (data: string) => {
       logger.log(data.toString());
     });
-    fotingoCmd.stderr.on("data", (data) => {
+    fotingoCmd.stderr.on("data", (data: string) => {
       logger.error(data.toString());
     });
-    fotingoCmd.on("error", (error) => {
+    fotingoCmd.on("error", (error: Error) => {
       debug("fotingo command returned an error %o", error);
       reject(error);
     });
-    fotingoCmd.on("close", (code) => {
+    fotingoCmd.on("close", (code: number) => {
       debug("fotingo command exited with code %s", code);
       if (code !== 0) {
         reject(new Error(`Fotingo exited with code ${code}`));

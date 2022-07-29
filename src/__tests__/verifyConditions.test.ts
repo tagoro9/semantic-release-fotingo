@@ -1,12 +1,16 @@
+import { jest } from "@jest/globals";
 import { spawn } from "child_process";
 
-import { getLogger, mockFotingoCommand } from "~/testUtils";
 import { verifyConditions } from "~/verifyConditions";
 
+import { getLogger, mockFotingoCommand } from "./utils";
+
 jest.mock("child_process", () => ({ spawn: jest.fn() }));
-const spawnMock = (spawn as unknown) as jest.Mock;
+const spawnMock = spawn as unknown as jest.Mock;
 
 describe("verifyConditions", () => {
+  const branch = { name: "main" };
+
   afterEach(() => {
     jest.clearAllMocks();
   });
@@ -14,7 +18,7 @@ describe("verifyConditions", () => {
   test("calls fotingo release with the context env", async () => {
     const logger = getLogger();
     await mockFotingoCommand({
-      callCommand: () => verifyConditions({}, { env: { FOTINGO_ENV_TEST: "test" }, logger }),
+      callCommand: () => verifyConditions({}, { branch, env: { FOTINGO_ENV_TEST: "test" }, logger }),
       exitCode: 0,
       spawnMock,
     });
@@ -34,7 +38,7 @@ describe("verifyConditions", () => {
   test("throws an error if fotingo errors out", async () => {
     await expect(
       mockFotingoCommand({
-        callCommand: () => verifyConditions({}, { env: { FOTINGO_ENV_TEST: "test" }, logger: getLogger() }),
+        callCommand: () => verifyConditions({}, { branch, env: { FOTINGO_ENV_TEST: "test" }, logger: getLogger() }),
         shouldSucceed: false,
         spawnMock,
       })
@@ -44,7 +48,7 @@ describe("verifyConditions", () => {
   test("rejects on any non zero exit code", async () => {
     await expect(
       mockFotingoCommand({
-        callCommand: () => verifyConditions({}, { env: { FOTINGO_ENV_TEST: "test" }, logger: getLogger() }),
+        callCommand: () => verifyConditions({}, { branch, env: { FOTINGO_ENV_TEST: "test" }, logger: getLogger() }),
         exitCode: 1,
         spawnMock,
       })
