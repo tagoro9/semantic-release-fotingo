@@ -20,7 +20,7 @@ export function callFotingo(
   return new Promise<void>((resolve, reject) => {
     const arguments__ = Array.isArray(arguments_) ? arguments_ : [arguments_];
     debug(`running fotingo release with args: ${arguments__}`);
-    const fotingoCmd = spawn("fotingo", arguments__, options);
+    const fotingoCmd = spawn("./node_modules/bin/fotingo", arguments__, options);
     fotingoCmd.stdout.on("data", (data: string) => {
       logger.log(data.toString());
     });
