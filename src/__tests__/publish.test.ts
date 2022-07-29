@@ -54,7 +54,7 @@ describe("publish", () => {
     expect(spawnMock).toHaveBeenCalled();
     expect(spawnMock.mock.calls[0].slice(0, -1)).toMatchInlineSnapshot(`
       Array [
-        "fotingo",
+        "./node_modules/bin/fotingo",
         Array [
           "release",
           "-y",
