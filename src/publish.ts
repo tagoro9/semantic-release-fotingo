@@ -20,7 +20,11 @@ function getIssuesInRelease(context: Result | Context): string[] {
   return [];
 }
 
-export async function success(_: Record<string, unknown>, context: Context): Promise<void> {
+export async function publish(_: Record<string, unknown>, context: Context): Promise<void> {
+  const issues = getIssuesInRelease(context)
+    .map((issue) => ["-i", issue.trim()])
+    .flat();
+  context.logger.log(`Creating release with issues: ${issues.join(",")}`);
   if (context.options?.dryRun) {
     context.logger.log("Skipping fotingo release. Dry run");
     return;
@@ -29,10 +33,16 @@ export async function success(_: Record<string, unknown>, context: Context): Pro
     context.logger.error("Could not find next release. Exiting");
     return;
   }
-  const issues = getIssuesInRelease(context)
-    .map((issue) => ["-i", issue.trim()])
-    .flat();
-  await callFotingo(["release", "-y", "-n", context.nextRelease.version, ...issues], context.logger, {
-    env: context.env,
-  });
+  if (issues.length === 0) {
+    context.logger.log("No issues found in this release. Skipping fotingo release");
+    return;
+  }
+  try {
+    await callFotingo(["release", "-y", "-n", context.nextRelease.version, ...issues], context.logger, {
+      env: context.env,
+    });
+  } catch (error) {
+    context.logger.error("fotingo release command failed");
+    context.logger.error(error);
+  }
 }
