@@ -29,7 +29,7 @@ describe("publish", () => {
 
   const options = {
     branches: [],
-    repositoryUrl: "",
+    repositoryUrl: "https://github.com/tagoro9/semantic-release-fotingo",
     tagFormat: "",
     plugins: [],
   };
@@ -48,11 +48,39 @@ describe("publish", () => {
           env: { FOTINGO_ENV_TEST: "test" },
           logger,
           nextRelease,
+          options,
         } as Context),
       exitCode: 0,
       spawnMock,
     });
     expect(spawnMock).toHaveBeenCalled();
+    expect(spawnMock.mock.calls[0].slice(0, -1)).toMatchInlineSnapshot(`
+      Array [
+        "fotingo",
+        Array [
+          "release",
+          "-y",
+          "-n",
+          "semantic-release-fotingo-1.0.0",
+          "-i",
+          "TEST-1234",
+          "-i",
+          "TEST-12",
+        ],
+      ]
+    `);
+    expect(logger.log).toHaveBeenCalled();
+    expect(logger.log.mock.calls[0][0]).toMatchInlineSnapshot(
+      `"Creating release semantic-release-fotingo-1.0.0 with issues: TEST-1234,TEST-12"`
+    );
+  });
+
+  test("it does not include the repo in the release name when it can't find it", async () => {
+    await mockFotingoCommand({
+      callCommand: () => publish({}, { branch, commits, env: {}, logger: getLogger(), nextRelease } as Context),
+      exitCode: 0,
+      spawnMock,
+    });
     expect(spawnMock.mock.calls[0].slice(0, -1)).toMatchInlineSnapshot(`
       Array [
         "fotingo",
@@ -68,8 +96,6 @@ describe("publish", () => {
         ],
       ]
     `);
-    expect(logger.log).toHaveBeenCalled();
-    expect(logger.log.mock.calls[0][0]).toMatchInlineSnapshot(`"Creating release with issues: -i,TEST-1234,-i,TEST-12"`);
   });
 
   test("it's a noop when there are no issues in the commits", async () => {
