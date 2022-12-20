@@ -25,7 +25,7 @@ export function callFotingo(
     // eslint-disable-next-line unicorn/prefer-module
     const fotingoPath = pathResolve(dirname(require.resolve("fotingo")), "../../.bin/fotingo");
     logger.log(`Running fotingo from ${fotingoPath}`);
-    const fotingoCmd = spawn(fotingoPath, arguments__, options);
+    const fotingoCmd = spawn(fotingoPath, arguments__, { ...options, env: { ...options?.env, CI: "true" } });
     fotingoCmd.stdout.on("data", (data: string) => {
       logger.log(data.toString());
     });
