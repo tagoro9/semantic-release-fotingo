@@ -26,7 +26,6 @@ export async function publish(_: Record<string, unknown>, context: Context): Pro
     context.logger.log("Skipping fotingo. Missing configuration parameters");
     return;
   }
-  const issues = getIssuesInRelease(context);
   const repo = context.options?.repositoryUrl && parseGithubUrl(context.options.repositoryUrl);
   if (context.options?.dryRun) {
     context.logger.log("Skipping fotingo release. Dry run");
@@ -36,6 +35,11 @@ export async function publish(_: Record<string, unknown>, context: Context): Pro
     context.logger.error("Could not find next release. Exiting");
     return;
   }
+  if (context.nextRelease.type.startsWith("pre")) {
+    context.logger.log("Skipping fotingo release. This is a pre-release");
+    return;
+  }
+  const issues = getIssuesInRelease(context);
   if (issues.length === 0) {
     context.logger.log("No issues found in this release. Skipping fotingo release");
     return;

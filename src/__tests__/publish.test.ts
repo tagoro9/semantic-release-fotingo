@@ -146,6 +146,25 @@ describe("publish", () => {
     expect(spawnMock).not.toHaveBeenCalled();
   });
 
+  test.each(["prerelease", "prepatch", "preminor", "premajor"])(
+    "it's a noop when it's a release of type: %s",
+    async (type) => {
+      await mockFotingoCommand({
+        callCommand: () =>
+          publish({}, {
+            branch,
+            commits,
+            env: {},
+            logger: getLogger(),
+            nextRelease: { ...nextRelease, type },
+          } as Context),
+        exitCode: 0,
+        spawnMock,
+      });
+      expect(spawnMock).not.toHaveBeenCalled();
+    }
+  );
+
   test("logs an error if fotingo errors out", async () => {
     const logger = getLogger();
     await mockFotingoCommand({
