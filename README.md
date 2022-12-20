@@ -22,4 +22,6 @@ The plugin can be configured in the [**semantic-release** configuration file](ht
 ## Configuration
 
 This plugin does not have any configuration. Look at fotingo's [configuration options](https://github.com/tagoro9/fotingo#configuration)
-to see how to customize the execution.
+to see how to customize the execution via environment variables.
+
+If required configuration is missing, the plugin will be a noop.

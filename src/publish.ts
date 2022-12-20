@@ -3,6 +3,7 @@ import * as parseGithubUrl from "parse-github-url";
 import { Context, Result } from "semantic-release";
 
 import { callFotingo } from "~/callFotingo";
+import { isConfigured } from "~/verifyConditions";
 
 /**
  * Given the release context, return the list of issues that were fixed so they
@@ -21,6 +22,10 @@ function getIssuesInRelease(context: Result | Context): string[] {
 }
 
 export async function publish(_: Record<string, unknown>, context: Context): Promise<void> {
+  if (!isConfigured()) {
+    context.logger.log("Skipping fotingo. Missing configuration parameters");
+    return;
+  }
   const issues = getIssuesInRelease(context);
   const repo = context.options?.repositoryUrl && parseGithubUrl(context.options.repositoryUrl);
   if (context.options?.dryRun) {

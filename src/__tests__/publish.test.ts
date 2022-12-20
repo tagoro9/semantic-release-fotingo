@@ -1,8 +1,9 @@
-import { jest } from "@jest/globals";
+import { beforeEach, jest } from "@jest/globals";
 import { spawn } from "child_process";
 import { Commit, Context } from "semantic-release";
 
 import { publish } from "~/publish";
+import { verifyConditions } from "~/verifyConditions";
 
 import { getLogger, mockFotingoCommand } from "./utils";
 
@@ -33,6 +34,22 @@ describe("publish", () => {
     tagFormat: "",
     plugins: [],
   };
+
+  const runVerify = async (missingConfiguration = false) => {
+    await mockFotingoCommand({
+      callCommand: () => verifyConditions({}, { branch, env: { FOTINGO_ENV_TEST: "test" }, logger: getLogger() }),
+      exitCode: 0,
+      ...(missingConfiguration
+        ? { error: new Error("Missing required configuration: test"), shouldSucceed: false }
+        : {}),
+      spawnMock,
+    });
+    spawnMock.mockReset();
+  };
+
+  beforeEach(async () => {
+    await runVerify();
+  });
 
   afterEach(() => {
     jest.clearAllMocks();
@@ -166,6 +183,24 @@ describe("publish", () => {
         ],
         [
           [Error: Fotingo exited with code 1],
+        ],
+      ]
+    `);
+  });
+
+  test("it's a noop if the configuration is missing", async () => {
+    await runVerify(true);
+    const logger = getLogger();
+    await mockFotingoCommand({
+      callCommand: () => publish({}, { branch, env: {}, logger, nextRelease } as Context),
+      exitCode: 0,
+      spawnMock,
+    });
+    expect(spawnMock).not.toHaveBeenCalled();
+    expect(logger.log.mock.calls).toMatchInlineSnapshot(`
+      [
+        [
+          "Skipping fotingo. Missing configuration parameters",
         ],
       ]
     `);

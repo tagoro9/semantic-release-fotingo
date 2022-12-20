@@ -20,17 +20,21 @@ function mockSpawn(spawnMock: jest.Mock) {
  * Mock the execution of a fotingo command, by emitting some
  * messages in the mocked spawn function
  * @param callCommand Function that actually calls the command
+ * @param error Error to emit if shouldSucceed is false
  * @param exitCode Fotingo exit code
  * @param shouldSucceed Flag indicating if the command should succeed or fail
+ * @param spawnMock Mocked spawn function
  */
 export async function mockFotingoCommand({
   callCommand,
   exitCode = 0,
   shouldSucceed = true,
   spawnMock,
+  error = new Error("Fotingo failed"),
 }: {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   callCommand: () => Promise<any>;
+  error?: Error;
   exitCode?: number;
   shouldSucceed?: boolean;
   spawnMock: jest.Mock;
@@ -43,7 +47,7 @@ export async function mockFotingoCommand({
   if (shouldSucceed) {
     eventEmitter.emit("close", exitCode);
   } else {
-    eventEmitter.emit("error", new Error("Fotingo failed"));
+    eventEmitter.emit("error", error);
   }
   return commandPromise;
 }

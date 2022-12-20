@@ -4164,10 +4164,10 @@ form-data@~2.3.2:
     combined-stream "^1.0.6"
     mime-types "^2.1.12"
 
-fotingo@^4.1.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/fotingo/-/fotingo-4.1.0.tgz#c40f0fcb350f2fae34a6aa8e53f984e0aecefbf8"
-  integrity sha512-TQn6+pRxoxdQcPhVdqJjkyMcL5kCVmxa9rZifiz4yR//qL/suwNgx1ejyrP59jrVLgSYa02THe7IIhWdS/0LxA==
+fotingo@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/fotingo/-/fotingo-4.1.1.tgz#c9953fec6832d55c7b3ecc5db15cb2a501c98a64"
+  integrity sha512-ug4ZyDvwmDTYU86rULB00lk9KkQeeiu7gxJkQxgaZQ7xE+9LnBMa5ht98zhJbh9vQe/AH7onDH0iTBc5zXNkqg==
   dependencies:
     "@keyv/sqlite" "^3.6.3"
     "@oclif/command" "^1.8.20"
