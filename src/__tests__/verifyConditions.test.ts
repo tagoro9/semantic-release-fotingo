@@ -1,7 +1,7 @@
 import { jest } from "@jest/globals";
 import { spawn } from "child_process";
 
-import { verifyConditions } from "~/verifyConditions";
+import { isConfigured, verifyConditions } from "~/verifyConditions";
 
 import { getLogger, mockFotingoCommand } from "./utils";
 
@@ -42,6 +42,7 @@ describe("verifyConditions", () => {
     `);
     expect(logger.log).toHaveBeenCalled();
     expect(logger.log.mock.calls[1][0]).toMatchInlineSnapshot(`"Test"`);
+    expect(isConfigured()).toBeTruthy();
   });
 
   test("throws an error if fotingo errors out", async () => {
@@ -52,6 +53,7 @@ describe("verifyConditions", () => {
         spawnMock,
       })
     ).rejects.toMatchInlineSnapshot(`[Error: Fotingo failed]`);
+    expect(isConfigured()).toBeTruthy();
   });
 
   test("rejects on any non zero exit code", async () => {
@@ -62,5 +64,16 @@ describe("verifyConditions", () => {
         spawnMock,
       })
     ).rejects.toMatchInlineSnapshot(`[Error: Fotingo exited with code 1]`);
+    expect(isConfigured()).toBeTruthy();
+  });
+
+  test("skips fotingo if it is not properly configured", async () => {
+    await mockFotingoCommand({
+      callCommand: () => verifyConditions({}, { branch, env: { FOTINGO_ENV_TEST: "test" }, logger: getLogger() }),
+      error: new Error("Missing required configuration: test"),
+      shouldSucceed: false,
+      spawnMock,
+    });
+    expect(isConfigured()).toBeFalsy();
   });
 });
