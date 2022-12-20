@@ -55,9 +55,9 @@ describe("publish", () => {
     });
     expect(spawnMock).toHaveBeenCalled();
     expect(spawnMock.mock.calls[0].slice(0, -1)).toMatchInlineSnapshot(`
-      Array [
+      [
         "fotingo",
-        Array [
+        [
           "release",
           "-y",
           "-n",
@@ -82,9 +82,9 @@ describe("publish", () => {
       spawnMock,
     });
     expect(spawnMock.mock.calls[0].slice(0, -1)).toMatchInlineSnapshot(`
-      Array [
+      [
         "fotingo",
-        Array [
+        [
           "release",
           "-y",
           "-n",
@@ -140,11 +140,11 @@ describe("publish", () => {
     });
     expect(logger.error).toHaveBeenCalledTimes(2);
     expect(logger.error.mock.calls).toMatchInlineSnapshot(`
-      Array [
-        Array [
+      [
+        [
           "fotingo release command failed",
         ],
-        Array [
+        [
           [Error: Fotingo failed],
         ],
       ]
@@ -160,11 +160,11 @@ describe("publish", () => {
     });
     expect(logger.error).toHaveBeenCalledTimes(2);
     expect(logger.error.mock.calls).toMatchInlineSnapshot(`
-      Array [
-        Array [
+      [
+        [
           "fotingo release command failed",
         ],
-        Array [
+        [
           [Error: Fotingo exited with code 1],
         ],
       ]
