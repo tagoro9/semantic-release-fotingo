@@ -25,9 +25,9 @@ describe("verifyConditions", () => {
     });
     expect(spawnMock).toHaveBeenCalled();
     expect(spawnMock.mock.calls[0].slice(0, -1)).toMatchInlineSnapshot(`
-      Array [
+      [
         "fotingo",
-        Array [
+        [
           "verify",
         ],
       ]
