@@ -32,6 +32,14 @@ describe("verifyConditions", () => {
         ],
       ]
     `);
+    expect(spawnMock.mock.calls[0][2]).toMatchInlineSnapshot(`
+      {
+        "env": {
+          "CI": "true",
+          "FOTINGO_ENV_TEST": "test",
+        },
+      }
+    `);
     expect(logger.log).toHaveBeenCalled();
     expect(logger.log.mock.calls[1][0]).toMatchInlineSnapshot(`"Test"`);
   });
