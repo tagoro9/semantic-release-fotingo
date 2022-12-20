@@ -15,7 +15,8 @@ export async function verifyConditions(_: Record<string, unknown>, context: Cont
   try {
     await callFotingo(["verify"], context.logger, { env: context.env });
   } catch (error) {
-    if (/Missing required configuration/.test(error.message)) {
+    // This is the error code for missing configuration
+    if (/with code 20/.test(error.message)) {
       isFotingoConfigured = false;
       context.logger.log("Skipping fotingo. Missing configuration parameters");
       return;

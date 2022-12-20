@@ -70,8 +70,7 @@ describe("verifyConditions", () => {
   test("skips fotingo if it is not properly configured", async () => {
     await mockFotingoCommand({
       callCommand: () => verifyConditions({}, { branch, env: { FOTINGO_ENV_TEST: "test" }, logger: getLogger() }),
-      error: new Error("Missing required configuration: test"),
-      shouldSucceed: false,
+      exitCode: 20,
       spawnMock,
     });
     expect(isConfigured()).toBeFalsy();

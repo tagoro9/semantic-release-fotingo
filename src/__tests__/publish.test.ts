@@ -39,9 +39,7 @@ describe("publish", () => {
     await mockFotingoCommand({
       callCommand: () => verifyConditions({}, { branch, env: { FOTINGO_ENV_TEST: "test" }, logger: getLogger() }),
       exitCode: 0,
-      ...(missingConfiguration
-        ? { error: new Error("Missing required configuration: test"), shouldSucceed: false }
-        : {}),
+      ...(missingConfiguration ? { exitCode: 20 } : {}),
       spawnMock,
     });
     spawnMock.mockReset();
