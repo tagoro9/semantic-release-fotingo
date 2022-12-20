@@ -33,7 +33,7 @@
   "dependencies": {
     "conventional-commits-parser": "^3.2.4",
     "debug": "^4.3.4",
-    "fotingo": "^4.1.1",
+    "fotingo": "^4.2.0",
     "parse-github-url": "^1.0.2"
   },
   "devDependencies": {
