@@ -38,10 +38,10 @@ export function callFotingo(
     });
     fotingoCmd.on("close", (code: number) => {
       debug("fotingo command exited with code %s", code);
-      if (code !== 0) {
-        reject(new Error(`Fotingo exited with code ${code}`));
-      } else {
+      if (code === 0) {
         resolve();
+      } else {
+        reject(new Error(`Fotingo exited with code ${code}`));
       }
     });
   });
