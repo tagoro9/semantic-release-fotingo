@@ -16,7 +16,7 @@ const debug = createDebugger("semantic-release-fotingo");
  */
 export function callFotingo(
   arguments_: string | string[],
-  { logger }: Context,
+  context: Context,
   options?: { cwd?: string; env?: { [k: string]: string } }
 ): Promise<void> {
   return new Promise<void>((resolve, reject) => {
@@ -24,13 +24,21 @@ export function callFotingo(
     debug(`running fotingo release with args: ${arguments__}`);
     // eslint-disable-next-line unicorn/prefer-module
     const fotingoPath = pathResolve(dirname(require.resolve("fotingo")), "../../.bin/fotingo");
-    logger.log(`Running fotingo from ${fotingoPath}`);
-    const fotingoCmd = spawn(fotingoPath, arguments__, { ...options, env: { ...options?.env, CI: "true" } });
+    context.logger.log(`Running fotingo from ${fotingoPath}`);
+    const repositoryUrl = context.options?.repositoryUrl;
+    const fotingoCmd = spawn(fotingoPath, arguments__, {
+      ...options,
+      env: {
+        ...options?.env,
+        ...(repositoryUrl ? { FOTINGO_GIT_REMOTE: repositoryUrl } : {}),
+        CI: "true",
+      },
+    });
     fotingoCmd.stdout.on("data", (data: string) => {
-      logger.log(data.toString());
+      context.logger.log(data.toString());
     });
     fotingoCmd.stderr.on("data", (data: string) => {
-      logger.error(data.toString());
+      context.logger.error(data.toString());
     });
     fotingoCmd.on("error", (error: Error) => {
       debug("fotingo command returned an error %o", error);

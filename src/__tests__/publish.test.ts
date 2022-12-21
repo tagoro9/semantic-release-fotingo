@@ -84,6 +84,15 @@ describe("publish", () => {
         ],
       ]
     `);
+    expect(spawnMock.mock.calls[0][2]).toMatchInlineSnapshot(`
+      {
+        "env": {
+          "CI": "true",
+          "FOTINGO_ENV_TEST": "test",
+          "FOTINGO_GIT_REMOTE": "https://github.com/tagoro9/semantic-release-fotingo",
+        },
+      }
+    `);
     expect(logger.log).toHaveBeenCalled();
     expect(logger.log.mock.calls[0][0]).toMatchInlineSnapshot(
       `"Creating release semantic-release-fotingo-1.0.0 with issues: TEST-1234,TEST-12"`
