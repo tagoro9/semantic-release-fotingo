@@ -1,6 +1,6 @@
 {
   "name": "semantic-release-fotingo",
-  "version": "1.5.2",
+  "version": "1.6.0",
   "description": "Semantic release plugin for fotingo",
   "main": "lib/index.js",
   "repository": "git@github.com:tagoro9/semantic-release-fotingo.git",
