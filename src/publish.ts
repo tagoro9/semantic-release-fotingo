@@ -48,7 +48,7 @@ export async function publish(_: Record<string, unknown>, context: Context): Pro
   const issueOptions = issues.flatMap((issue) => ["-i", issue.trim()]);
   context.logger.log(`Creating release ${releaseName} with issues: ${issues.join(",")}`);
   try {
-    await callFotingo(["release", "-y", "-n", releaseName, ...issueOptions], context.logger, {
+    await callFotingo(["release", "-y", "-n", releaseName, ...issueOptions], context, {
       env: context.env,
     });
   } catch (error) {

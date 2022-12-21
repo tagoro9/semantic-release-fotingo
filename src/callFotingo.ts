@@ -9,14 +9,14 @@ const debug = createDebugger("semantic-release-fotingo");
 /**
  * Invoke a fotingo command as a child process
  * @param arguments_ Arguments
- * @param logger Semantic release logger
+ * @param context Semantic release context
  * @param [options] Command options
  * @param [options.cwd] Working directory where to run the cmd
  * @param [options.env] Command environment
  */
 export function callFotingo(
   arguments_: string | string[],
-  logger: Context["logger"],
+  { logger }: Context,
   options?: { cwd?: string; env?: { [k: string]: string } }
 ): Promise<void> {
   return new Promise<void>((resolve, reject) => {

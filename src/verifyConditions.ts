@@ -13,7 +13,7 @@ export function isConfigured() {
 
 export async function verifyConditions(_: Record<string, unknown>, context: Context): Promise<void> {
   try {
-    await callFotingo(["verify"], context.logger, { env: context.env });
+    await callFotingo(["verify"], context, { env: context.env });
   } catch (error) {
     // This is the error code for missing configuration
     if (/with code 20/.test(error.message)) {
