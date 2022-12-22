@@ -26,7 +26,7 @@ describe("publish", () => {
     version: "1.0.0",
   };
 
-  const branch = { name: "main" };
+  const branch = { name: "main", main: true, type: "release" };
 
   const options = {
     branches: [],
@@ -155,17 +155,16 @@ describe("publish", () => {
     expect(spawnMock).not.toHaveBeenCalled();
   });
 
-  test.each(["prerelease", "prepatch", "preminor", "premajor"])(
-    "it's a noop when it's a release of type: %s",
-    async (type) => {
+  test.each([{ type: "maintenance", main: false }, { type: "prerelease" }, { type: "release", main: false }])(
+    "it's a noop when it's a pre-release of type: %o",
+    async (branchConfig) => {
       await mockFotingoCommand({
         callCommand: () =>
           publish({}, {
-            branch,
+            branch: { ...branch, ...branchConfig },
             commits,
             env: {},
             logger: getLogger(),
-            nextRelease: { ...nextRelease, type },
           } as Context),
         exitCode: 0,
         spawnMock,

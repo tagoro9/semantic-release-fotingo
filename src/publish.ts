@@ -21,6 +21,14 @@ function getIssuesInRelease(context: Result | Context): string[] {
   return [];
 }
 
+/**
+ * Return if the branch is a prerelease
+ * @param branch Branch info
+ */
+function isPrerelease(branch: { main: boolean; type: string }): boolean {
+  return branch.type === "prerelease" || (branch.type === "release" && !branch.main);
+}
+
 export async function publish(_: Record<string, unknown>, context: Context): Promise<void> {
   if (!isConfigured()) {
     context.logger.log("Skipping fotingo. Missing configuration parameters");
@@ -35,7 +43,8 @@ export async function publish(_: Record<string, unknown>, context: Context): Pro
     context.logger.error("Could not find next release. Exiting");
     return;
   }
-  if (context.nextRelease.type.startsWith("pre")) {
+  // The typing for branch is not correct and it has these extra properties here
+  if (isPrerelease(context.branch as unknown as { main: boolean; type: string })) {
     context.logger.log("Skipping fotingo release. This is a pre-release");
     return;
   }
