@@ -1,12 +1,20 @@
 {
-  "branches": ["main"],
+  "branches": [
+    "main",
+    {
+      "name": "(f|b|c)/*",
+      "channel": "next",
+      "prerelease": "beta-${(/^[a-zA-Z]+-[0-9]+/.exec(name.substr(2)) || [name.replace(/[_/.]/g, '-')])[0]}-${Date.now()}"
+    }
+  ],
   "plugins": [
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",
     [
       "@semantic-release/npm",
       {
-        "tarballDir": "pack"
+        "tarballDir": "pack",
+        "publish": false
       }
     ],
     [
@@ -19,7 +27,7 @@
       "@semantic-release/git",
       {
         "assets": ["package.json", "README.md", "yarn.lock"],
-        "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+        "message": "ci(release): ${nextRelease.version} <% nextRelease.channel !== 'next' ? print('[skip ci]') : print('') %>\n\n${nextRelease.notes}"
       }
     ]
   ]
