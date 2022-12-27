@@ -11,14 +11,28 @@ import { isConfigured } from "~/verifyConditions";
  * @param context Release context
  * @returns List of fixes issues in the release
  */
-function getIssuesInRelease(context: Result | Context): string[] {
-  if (typeof context === "object" && "commits" in context) {
-    return (context.commits || [])
-      .flatMap((commit) => sync(commit.message).references)
-      .filter((reference) => reference.action && /fixes/i.test(reference.action))
-      .map((reference) => reference.issue);
+async function getIssuesInRelease(context: Result | Context): Promise<string[]> {
+  const issues: string[] = [];
+  // Extract issue from branch name
+  if (typeof context === "object" && "branch" in context) {
+    try {
+      const data = await callFotingo(["inspect", "-b", context.branch.name], context, { env: context.env });
+      issues.push(...(JSON.parse(data).issues || []).map((issue: { issue: string; raw: string }) => issue.issue));
+    } catch (error) {
+      // Ignore any error and proceed
+      context.logger.error("Failed call fotingo inspect", error);
+    }
   }
-  return [];
+  // Extract issues in commits
+  if (typeof context === "object" && "commits" in context) {
+    issues.push(
+      ...(context.commits || [])
+        .flatMap((commit) => sync(commit.message).references)
+        .filter((reference) => reference.action && /fixes/i.test(reference.action))
+        .map((reference) => reference.issue)
+    );
+  }
+  return issues;
 }
 
 /**
@@ -48,7 +62,7 @@ export async function publish(_: Record<string, unknown>, context: Context): Pro
     context.logger.log("Skipping fotingo release. This is a pre-release");
     return;
   }
-  const issues = getIssuesInRelease(context);
+  const issues = await getIssuesInRelease(context);
   if (issues.length === 0) {
     context.logger.log("No issues found in this release. Skipping fotingo release");
     return;

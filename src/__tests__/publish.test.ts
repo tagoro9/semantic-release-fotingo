@@ -56,6 +56,21 @@ describe("publish", () => {
   test("calls fotingo release with the context env", async () => {
     const logger = getLogger();
     await mockFotingoCommand({
+      callback(arguments_, childProcess) {
+        const fotingoCommand = arguments_[1][0];
+        if (fotingoCommand === "release") {
+          childProcess.stdout?.emit("data", "Test");
+          childProcess.emit("close", 0);
+        } else if (fotingoCommand === "inspect") {
+          childProcess.stdout?.emit("data", "{");
+          childProcess.stdout?.emit(
+            "data",
+            '"commits": [], "issues": [{"raw": "#TEST-678", "issue": "TEST-678"}], "name": "c/test-678_fotingo_gets_tickets_from_a_brach"'
+          );
+          childProcess.stdout?.emit("data", "}");
+          childProcess.emit("close", 0);
+        }
+      },
       callCommand: () =>
         publish({}, {
           branch,
@@ -68,8 +83,18 @@ describe("publish", () => {
       exitCode: 0,
       spawnMock,
     });
-    expect(spawnMock).toHaveBeenCalled();
+    expect(spawnMock).toHaveBeenCalledTimes(2);
     expect(spawnMock.mock.calls[0].slice(0, -1)).toMatchInlineSnapshot(`
+      [
+        "fotingo",
+        [
+          "inspect",
+          "-b",
+          "main",
+        ],
+      ]
+    `);
+    expect(spawnMock.mock.calls[1].slice(0, -1)).toMatchInlineSnapshot(`
       [
         "fotingo",
         [
@@ -78,13 +103,15 @@ describe("publish", () => {
           "-n",
           "semantic-release-fotingo-1.0.0",
           "-i",
+          "TEST-678",
+          "-i",
           "TEST-1234",
           "-i",
           "TEST-12",
         ],
       ]
     `);
-    expect(spawnMock.mock.calls[0][2]).toMatchInlineSnapshot(`
+    expect(spawnMock.mock.calls[1][2]).toMatchInlineSnapshot(`
       {
         "env": {
           "CI": "true",
@@ -94,9 +121,7 @@ describe("publish", () => {
       }
     `);
     expect(logger.log).toHaveBeenCalled();
-    expect(logger.log.mock.calls[0][0]).toMatchInlineSnapshot(
-      `"Creating release semantic-release-fotingo-1.0.0 with issues: TEST-1234,TEST-12"`
-    );
+    expect(logger.log.mock.calls[1][0]).toMatchInlineSnapshot(`"{"`);
   });
 
   test("it does not include the repo in the release name when it can't find it", async () => {
@@ -105,7 +130,7 @@ describe("publish", () => {
       exitCode: 0,
       spawnMock,
     });
-    expect(spawnMock.mock.calls[0].slice(0, -1)).toMatchInlineSnapshot(`
+    expect(spawnMock.mock.calls[1].slice(0, -1)).toMatchInlineSnapshot(`
       [
         "fotingo",
         [
@@ -122,13 +147,13 @@ describe("publish", () => {
     `);
   });
 
-  test("it's a noop when there are no issues in the commits", async () => {
+  test("it's a noop when there are no issues", async () => {
     await mockFotingoCommand({
       callCommand: () => publish({}, { branch, env: {}, logger: getLogger(), nextRelease } as Context),
       exitCode: 0,
       spawnMock,
     });
-    expect(spawnMock).not.toHaveBeenCalled();
+    expect(spawnMock).toHaveBeenCalled();
   });
 
   test("it's a noop when there is no release", async () => {
@@ -180,9 +205,13 @@ describe("publish", () => {
       shouldSucceed: false,
       spawnMock,
     });
-    expect(logger.error).toHaveBeenCalledTimes(2);
+    expect(logger.error).toHaveBeenCalledTimes(3);
     expect(logger.error.mock.calls).toMatchInlineSnapshot(`
       [
+        [
+          "Failed call fotingo inspect",
+          [Error: Fotingo failed],
+        ],
         [
           "fotingo release command failed",
         ],
@@ -200,9 +229,13 @@ describe("publish", () => {
       exitCode: 1,
       spawnMock,
     });
-    expect(logger.error).toHaveBeenCalledTimes(2);
+    expect(logger.error).toHaveBeenCalledTimes(3);
     expect(logger.error.mock.calls).toMatchInlineSnapshot(`
       [
+        [
+          "Failed call fotingo inspect",
+          [Error: Fotingo exited with code 1],
+        ],
         [
           "fotingo release command failed",
         ],
