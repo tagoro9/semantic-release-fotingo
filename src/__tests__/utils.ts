@@ -4,22 +4,29 @@ import EventEmitter = require("events");
 import { Context, LoggerFunction } from "semantic-release";
 
 /**
- * Mock a call to spawn. Return a similar api backed by event emitters
+ * Mock a call to spawn. The passed callback receives the arguments passed to the spawn function and a child process mock
  */
-function mockSpawn(spawnMock: jest.Mock) {
+function mockSpawn(
+  spawnMock: jest.Mock,
+  callback: (arguments_: Parameters<typeof spawn>, childProcess: ReturnType<typeof spawn>) => void
+): void {
   const eventEmitter = new EventEmitter.EventEmitter();
   Object.assign(eventEmitter, {
     stderr: new EventEmitter.EventEmitter(),
     stdout: new EventEmitter.EventEmitter(),
   });
-  spawnMock.mockImplementation(() => eventEmitter);
-  return eventEmitter as unknown as ReturnType<typeof spawn>;
+  spawnMock.mockImplementation((...arguments_) => {
+    setTimeout(() => callback(arguments_, eventEmitter as unknown as ReturnType<typeof spawn>), 0);
+    return eventEmitter as unknown as ReturnType<typeof spawn>;
+  });
 }
 
 /**
  * Mock the execution of a fotingo command, by emitting some
  * messages in the mocked spawn function
  * @param callCommand Function that actually calls the command
+ * @param callback Function that gets instantiated when spawn is called. It recevied the arguments spawn is called with
+ * and an event emitter to send messages to the calling function
  * @param error Error to emit if shouldSucceed is false
  * @param exitCode Fotingo exit code
  * @param shouldSucceed Flag indicating if the command should succeed or fail
@@ -27,29 +34,35 @@ function mockSpawn(spawnMock: jest.Mock) {
  */
 export async function mockFotingoCommand({
   callCommand,
+  callback,
+  error = new Error("Fotingo failed"),
   exitCode = 0,
   shouldSucceed = true,
   spawnMock,
-  error = new Error("Fotingo failed"),
 }: {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   callCommand: () => Promise<any>;
+  callback?: (arguments_: Parameters<typeof spawn>, childProcess: ReturnType<typeof spawn>) => void;
   error?: Error;
   exitCode?: number;
   shouldSucceed?: boolean;
   spawnMock: jest.Mock;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 }): Promise<any> {
-  const eventEmitter = mockSpawn(spawnMock);
-  const commandPromise = callCommand();
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  eventEmitter.stdout!.emit("data", "Test");
-  if (shouldSucceed) {
-    eventEmitter.emit("close", exitCode);
-  } else {
-    eventEmitter.emit("error", error);
-  }
-  return commandPromise;
+  mockSpawn(
+    spawnMock,
+    callback ??
+      ((_, childProcess) => {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        childProcess.stdout!.emit("data", "Test");
+        if (shouldSucceed) {
+          childProcess.emit("close", exitCode);
+        } else {
+          childProcess.emit("error", error);
+        }
+      })
+  );
+  return callCommand();
 }
 
 /**
