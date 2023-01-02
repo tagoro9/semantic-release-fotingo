@@ -1107,19 +1107,7 @@
     is-wsl "^2.1.1"
     tslib "^2.0.0"
 
-"@oclif/config@^1.18.2":
-  version "1.18.3"
-  resolved "https://registry.yarnpkg.com/@oclif/config/-/config-1.18.3.tgz#ddfc144fdab66b1658c2f1b3478fa7fbfd317e79"
-  integrity sha512-sBpko86IrTscc39EvHUhL+c++81BVTsIZ3ETu/vG+cCdi0N6vb2DoahR67A9FI2CGnxRRHjnTfa3m6LulwNATA==
-  dependencies:
-    "@oclif/errors" "^1.3.5"
-    "@oclif/parser" "^3.8.0"
-    debug "^4.1.1"
-    globby "^11.0.1"
-    is-wsl "^2.1.1"
-    tslib "^2.3.1"
-
-"@oclif/config@^1.18.6":
+"@oclif/config@^1.18.2", "@oclif/config@^1.18.6":
   version "1.18.6"
   resolved "https://registry.yarnpkg.com/@oclif/config/-/config-1.18.6.tgz#37367026b3110a2f04875509b1920a8ee4489f21"
   integrity sha512-OWhCpdu4QqggOPX1YPZ4XVmLLRX+lhGjXV6RNA7sogOwLqlEmSslnN/lhR5dkhcWZbKWBQH29YCrB3LDPRu/IA==
@@ -1131,41 +1119,7 @@
     is-wsl "^2.1.1"
     tslib "^2.3.1"
 
-"@oclif/core@^1.21.0":
-  version "1.22.0"
-  resolved "https://registry.yarnpkg.com/@oclif/core/-/core-1.22.0.tgz#dfdd76db6435cc1be2de7bbe25c23302332b9297"
-  integrity sha512-Bvyi6uFbmpkFl9XUATsGMlqEDGfqMKWL0Mu5VQTuPg7/NIyfygYkaburn11uGkOp0a8yG6fPpyVBfGmztjNPGA==
-  dependencies:
-    "@oclif/linewrap" "^1.0.0"
-    "@oclif/screen" "^3.0.3"
-    ansi-escapes "^4.3.2"
-    ansi-styles "^4.3.0"
-    cardinal "^2.1.1"
-    chalk "^4.1.2"
-    clean-stack "^3.0.1"
-    cli-progress "^3.10.0"
-    debug "^4.3.4"
-    ejs "^3.1.6"
-    fs-extra "^9.1.0"
-    get-package-type "^0.1.0"
-    globby "^11.1.0"
-    hyperlinker "^1.0.0"
-    indent-string "^4.0.0"
-    is-wsl "^2.2.0"
-    js-yaml "^3.14.1"
-    natural-orderby "^2.0.3"
-    object-treeify "^1.1.33"
-    password-prompt "^1.1.2"
-    semver "^7.3.7"
-    string-width "^4.2.3"
-    strip-ansi "^6.0.1"
-    supports-color "^8.1.1"
-    supports-hyperlinks "^2.2.0"
-    tslib "^2.4.1"
-    widest-line "^3.1.0"
-    wrap-ansi "^7.0.0"
-
-"@oclif/core@^1.22.0":
+"@oclif/core@^1.21.0", "@oclif/core@^1.22.0":
   version "1.23.0"
   resolved "https://registry.yarnpkg.com/@oclif/core/-/core-1.23.0.tgz#4bad6f950dd9431f90f481c7253b67857540def4"
   integrity sha512-LnQoRtyQLQCsEHQsY7Ju0Z+g84XIVTxtVWr9hq81Juzj0o2f4zaFZ3f39VfnXvxI4m+QmROaoUJvr417eSEuhg==
@@ -1199,7 +1153,7 @@
     widest-line "^3.1.0"
     wrap-ansi "^7.0.0"
 
-"@oclif/errors@1.3.5", "@oclif/errors@^1.3.5":
+"@oclif/errors@1.3.5":
   version "1.3.5"
   resolved "https://registry.yarnpkg.com/@oclif/errors/-/errors-1.3.5.tgz#a1e9694dbeccab10fe2fe15acb7113991bed636c"
   integrity sha512-OivucXPH/eLLlOT7FkCMoZXiaVYf8I/w1eTAM1+gKzfhALwWTusxEx7wBmW0uzvkSg/9ovWLycPaBgJbM3LOCQ==
@@ -1291,19 +1245,6 @@
   dependencies:
     "@octokit/types" "^6.0.3"
 
-"@octokit/core@^4.0.0":
-  version "4.0.4"
-  resolved "https://registry.yarnpkg.com/@octokit/core/-/core-4.0.4.tgz#335d9b377691e3264ce57a9e5a1f6cda783e5838"
-  integrity sha512-sUpR/hc4Gc7K34o60bWC7WUH6Q7T6ftZ2dUmepSyJr9PRF76/qqkWjE2SOEzCqLA5W83SaISymwKtxks+96hPQ==
-  dependencies:
-    "@octokit/auth-token" "^3.0.0"
-    "@octokit/graphql" "^5.0.0"
-    "@octokit/request" "^6.0.0"
-    "@octokit/request-error" "^3.0.0"
-    "@octokit/types" "^6.0.3"
-    before-after-hook "^2.2.0"
-    universal-user-agent "^6.0.0"
-
 "@octokit/core@^4.1.0":
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/@octokit/core/-/core-4.1.0.tgz#b6b03a478f1716de92b3f4ec4fd64d05ba5a9251"
@@ -1350,13 +1291,6 @@
   resolved "https://registry.yarnpkg.com/@octokit/openapi-types/-/openapi-types-4.0.1.tgz#bafd3d173974827ba0b733fcca7f1860cb71a9aa"
   integrity sha512-k2hRcfcLRyPJjtYfJLzg404n7HZ6sUpAWAR/uNI8tf96NgatWOpw1ocdF+WFfx/trO1ivBh7ckynO1rn+xAw/Q==
 
-"@octokit/plugin-paginate-rest@^3.0.0":
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/@octokit/plugin-paginate-rest/-/plugin-paginate-rest-3.1.0.tgz#86f8be759ce2d6d7c879a31490fd2f7410b731f0"
-  integrity sha512-+cfc40pMzWcLkoDcLb1KXqjX0jTGYXjKuQdFQDc6UAknISJHnZTiBqld6HDwRJvD4DsouDKrWXNbNV0lE/3AXA==
-  dependencies:
-    "@octokit/types" "^6.41.0"
-
 "@octokit/plugin-paginate-rest@^5.0.0":
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/@octokit/plugin-paginate-rest/-/plugin-paginate-rest-5.0.1.tgz#93d7e74f1f69d68ba554fa6b888c2a9cf1f99a83"
@@ -1368,14 +1302,6 @@
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@octokit/plugin-request-log/-/plugin-request-log-1.0.4.tgz#5e50ed7083a613816b1e4a28aeec5fb7f1462e85"
   integrity sha512-mLUsMkgP7K/cnFEw07kWqXGF5LKrOkD+lhCrKvPHXWDywAwuDUeDwWBpc69XK3pNX0uKiVt8g5z96PJ6z9xCFA==
-
-"@octokit/plugin-rest-endpoint-methods@^6.0.0":
-  version "6.2.0"
-  resolved "https://registry.yarnpkg.com/@octokit/plugin-rest-endpoint-methods/-/plugin-rest-endpoint-methods-6.2.0.tgz#c06359d2f94436f8c67d345093cb02dedd31d974"
-  integrity sha512-PZ+yfkbZAuRUtqu6Y191/V3eM0KBPx+Yq7nh+ONPdpm3EX4pd5UnK2y2XgO/0AtNum5a4aJCDjqsDuUZ2hWRXw==
-  dependencies:
-    "@octokit/types" "^6.41.0"
-    deprecation "^2.3.1"
 
 "@octokit/plugin-rest-endpoint-methods@^6.7.0":
   version "6.7.0"
@@ -1406,17 +1332,7 @@
     node-fetch "^2.6.7"
     universal-user-agent "^6.0.0"
 
-"@octokit/rest@^19.0.0":
-  version "19.0.3"
-  resolved "https://registry.yarnpkg.com/@octokit/rest/-/rest-19.0.3.tgz#b9a4e8dc8d53e030d611c053153ee6045f080f02"
-  integrity sha512-5arkTsnnRT7/sbI4fqgSJ35KiFaN7zQm0uQiQtivNQLI8RQx8EHwJCajcTUwmaCMNDg7tdCvqAnc7uvHHPxrtQ==
-  dependencies:
-    "@octokit/core" "^4.0.0"
-    "@octokit/plugin-paginate-rest" "^3.0.0"
-    "@octokit/plugin-request-log" "^1.0.4"
-    "@octokit/plugin-rest-endpoint-methods" "^6.0.0"
-
-"@octokit/rest@^19.0.5":
+"@octokit/rest@^19.0.0", "@octokit/rest@^19.0.5":
   version "19.0.5"
   resolved "https://registry.yarnpkg.com/@octokit/rest/-/rest-19.0.5.tgz#4dbde8ae69b27dca04b5f1d8119d282575818f6c"
   integrity sha512-+4qdrUFq2lk7Va+Qff3ofREQWGBeoTKNqlJO+FGjFP35ZahP+nBenhZiGdu8USSgmq4Ky3IJ/i4u0xbLqHaeow==
@@ -1434,7 +1350,7 @@
     "@octokit/openapi-types" "^4.0.0"
     "@types/node" ">= 8"
 
-"@octokit/types@^6.16.1", "@octokit/types@^6.41.0":
+"@octokit/types@^6.16.1":
   version "6.41.0"
   resolved "https://registry.yarnpkg.com/@octokit/types/-/types-6.41.0.tgz#e58ef78d78596d2fb7df9c6259802464b5f84a04"
   integrity sha512-eJ2jbzjdijiL3B4PrSQaSjuF2sPEQPVCPzBvTHJD9Nz+9dw2SGH4K4xeQJ77YfTq5bRQ+bD8wT11JbeDPmxmGg==
@@ -4144,9 +4060,9 @@ form-data@^4.0.0:
     mime-types "^2.1.12"
 
 fotingo@^4.4.0:
-  version "4.4.0"
-  resolved "https://registry.yarnpkg.com/fotingo/-/fotingo-4.4.0.tgz#fe659f2b9b9851478738e95cbf11a98310fac1bb"
-  integrity sha512-QgnjpatWp2IEGPYKMCC9f6bUaRt1LdywreB6GS+JHNogs2TNDvBJaWk37PuhWr/B/OAA1pleFtZ2KYJvYnj3Eg==
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/fotingo/-/fotingo-4.5.0.tgz#ada4b855499fe3044e8a79cbc4a6fdc0eddb2ba8"
+  integrity sha512-Mc+kV+xNVVs+sQvLI4S7hO8eZXuI1h87rhhMjV1XXEIsxN1lJBGheL+FppWJWHaPNLJt2TLccBpnAS8aWL9RUA==
   dependencies:
     "@keyv/sqlite" "^3.6.4"
     "@oclif/command" "^1.8.20"
